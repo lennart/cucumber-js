@@ -2,12 +2,13 @@ require('../../support/spec_helper');
 
 describe("Cucumber.Listener.ProgressFormatter", function() {
   var Cucumber = requireLib('cucumber');
-  var listener, failedStepResults;
+  var listener, failedStepResults, configuration;
 
   beforeEach(function() {
     failedStepResults = createSpy("Failed steps");
     spyOn(Cucumber.Type, 'Collection').andReturn(failedStepResults);
-    listener    = Cucumber.Listener.ProgressFormatter();
+    configuration = createSpy("configuration");
+    listener    = Cucumber.Listener.ProgressFormatter(configuration);
   });
 
   describe("constructor", function() {
@@ -72,6 +73,7 @@ describe("Cucumber.Listener.ProgressFormatter", function() {
         expect(userFunction).toHaveBeenCalledWith(logged);
       });
     });
+
   });
 
   describe("getLogs()", function() {
@@ -681,7 +683,7 @@ describe("Cucumber.Listener.ProgressFormatter", function() {
 
     it("creates a new step definition snippet builder", function() {
       listener.storeUndefinedStep(step);
-      expect(Cucumber.SupportCode.StepDefinitionSnippetBuilder).toHaveBeenCalledWith(step);
+      expect(Cucumber.SupportCode.StepDefinitionSnippetBuilder).toHaveBeenCalledWith(step, configuration);
     });
 
     it("builds the step definition", function() {
