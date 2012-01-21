@@ -874,12 +874,13 @@ describe("Cucumber.Listener.ProgressFormatter", function() {
   });
 
   describe("logFailedStepResult()", function() {
-    var stepResult, failureException;
+    var stepResult, failureException, stepName;
 
     beforeEach(function() {
       spyOn(listener, 'log');
+      getName = createSpy('failure exception step name');
       failureException = createSpy('caught exception');
-      stepResult       = createSpyWithStubs("failed step result", { getFailureException: failureException });
+      stepResult       = createSpyWithStubs("failed step result", { getName: getName, getFailureException: failureException });
     });
 
     it("gets the failure exception from the step result", function() {

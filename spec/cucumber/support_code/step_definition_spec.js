@@ -149,7 +149,7 @@ describe("Cucumber.SupportCode.StepDefinition", function() {
 
       it("creates a new failed step result", function() {
         stepDefinition.invoke(stepName, world, stepAttachment, callback);
-        expect(Cucumber.Runtime.FailedStepResult).toHaveBeenCalledWith(failureException);
+        expect(Cucumber.Runtime.FailedStepResult).toHaveBeenCalledWith(failureException, stepName);
       });
 
       it("does not create a new pending step result", function() {
