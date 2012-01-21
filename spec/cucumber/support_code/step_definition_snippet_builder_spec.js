@@ -10,7 +10,61 @@ describe("Cucumber.SupportCode.StepDefinitionSnippetBuilder", function() {
   beforeEach(function() {
     step           = createSpy("step");
     snippetBuilder = Cucumber.SupportCode.StepDefinitionSnippetBuilder(step);
+  
+  });  
+
+  describe("using coffee-script snippet language", function () {
+
+    beforeEach(function() {
+      snippetBuilder = Cucumber.SupportCode.StepDefinitionSnippetBuilder(step, {
+        snippetLang: "coffee"
+      });
+    });
+    
+    describe("buildSnippet()", function() {
+      var functionName, pattern, parameters;
+
+      beforeEach(function() {
+        functionName   = "defineSomeStep";
+        pattern        = "/^some step pattern$/";
+        parameters     = "some, parameters, and, the, callback";
+        spyOn(snippetBuilder, 'buildStepDefinitionFunctionName').andReturn(functionName);
+        spyOn(snippetBuilder, 'buildStepDefinitionPattern').andReturn(pattern);
+        spyOn(snippetBuilder, 'buildStepDefinitionParameters').andReturn(parameters);
+      });
+
+      it("builds the step definition's function name", function() {
+        snippetBuilder.buildSnippet();
+        expect(snippetBuilder.buildStepDefinitionFunctionName).toHaveBeenCalled();
+      });
+
+      it("builds the step definition's pattern", function() {
+        snippetBuilder.buildSnippet();
+        expect(snippetBuilder.buildStepDefinitionPattern).toHaveBeenCalled();
+      });
+
+      it("builds the step definition's parameters", function() {
+        snippetBuilder.buildSnippet();
+        expect(snippetBuilder.buildStepDefinitionParameters).toHaveBeenCalled();
+      });
+
+      it("returns the snippet", function() {
+        var actualSnippet   = snippetBuilder.buildSnippet();
+        var expectedSnippet =
+          ""      +
+          functionName +
+          " "          +
+          pattern      +
+          ", (" +
+          parameters +
+          ") ->\n  # express the regexp above with the code you wish you had\n  callback.pending()\n\n";
+        expect(actualSnippet).toBe(expectedSnippet);
+      });
+    });
+ 
   });
+
+
 
   describe("buildSnippet()", function() {
     var functionName, pattern, parameters;
