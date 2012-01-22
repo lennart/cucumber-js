@@ -4,13 +4,14 @@ require('../../support/configurations_shared_examples.js');
 describe("Cucumber.Cli.Configuration", function() {
   var Cucumber = requireLib('cucumber');
 
-  var argv, configuration;
+  var argv, configuration, snippetLang;
   var argumentParser;
   var context = {};
 
   beforeEach(function() {
     argv                = createSpy("arguments (argv)");
-    argumentParser      = createSpyWithStubs("argument parser", {parse: null});
+    snippetLang         = createSpy("undefined snippet language"); 
+    argumentParser      = createSpyWithStubs("argument parser", {parse: null, snippetLang: snippetLang});
     spyOn(Cucumber.Cli, 'ArgumentParser').andReturn(argumentParser);
     configuration       = Cucumber.Cli.Configuration(argv);
     context['configuration'] = configuration;
